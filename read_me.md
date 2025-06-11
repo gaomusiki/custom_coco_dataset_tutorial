@@ -1,32 +1,32 @@
 本文是一个简易教程，1.安装labelme标注自制的数据集；2.自制符合coco格式的数据集，方便使用一些框架（detectron）内置的coco相关函数；3.使用detectron框架，mask2former的网络结构，训练一个分割模型
 
-# 一.安装labelme,完成图片数据标注，并转化为json格式标注
-## 1 安装labelme
-推荐在windows下安装，因为labelme在linux下gui容易报错
-### 1.1 下载 anaconda
-从官网或者清华源下载并安装到本地
-### 1.2 安装labelme
-先创造环境,python版本不要太高，容易报错
-conda create --name labelme python=3.6 -y
-激活环境后，安装必要依赖
-conda install pyqt
-conda install pillow
-安装labelme
-pip install labelme
-安装成功后，在终端输入labelme,会启动程序。
-### 1.3 使用labelme 标注数据
-左边栏 open dir打开待标记的图片集。
-使用create polygons标点法框出目标物体的轮廓，轮廓首尾相连后会自动跳出label框，输入label名，如有需要可以输入group id，可从同类物体中区分出个体。
-我们在标注时，一类物体使用同一个label。需要标注的类别（需要预警的18类险情）事先定义好，整个训练流程前后要保持一致。
-完成后crtl s保存到目标文件夹，labelme会自动生成一个与原图文件名一的json文件。
-# 二。将labelme的json文件按coco数据集格式组织
-# 1 安装panopticapi
-## 1.1
-git clone https://github.com/cocodataset/panopticapi.git
-这个文件夹很重要，后面要改变其中一些文件，使用者如果有别的需求，也可以自己改写
-pip install -e panopticapi
-安装panopticapi这个工具
-# 2 转化为instance annotation
+# 一.安装labelme,完成图片数据标注，并转化为json格式标注  
+## 1 安装labelme  
+推荐在windows下安装，因为labelme在linux下gui容易报错  
+### 1.1 下载 anaconda  
+从官网或者清华源下载并安装到本地  
+### 1.2 安装labelme  
+先创造环境,python版本不要太高，容易报错  
+conda create --name labelme python=3.6 -y  
+激活环境后，安装必要依赖  
+conda install pyqt  
+conda install pillow  
+安装labelme  
+pip install labelme  
+安装成功后，在终端输入labelme,会启动程序。  
+### 1.3 使用labelme 标注数据  
+左边栏 open dir打开待标记的图片集。  
+使用create polygons标点法框出目标物体的轮廓，轮廓首尾相连后会自动跳出label框，输入label名，如有需要可以输入group id，可从同类物体中区分出个体。  
+我们在标注时，一类物体使用同一个label。需要标注的类别（需要预警的18类险情）事先定义好，整个训练流程前后要保持一致。  
+完成后crtl s保存到目标文件夹，labelme会自动生成一个与原图文件名一的json文件。  
+# 二。将labelme的json文件按coco数据集格式组织  
+# 1 安装panopticapi  
+## 1.1  
+git clone https://github.com/cocodataset/panopticapi.git  
+这个文件夹很重要，后面要改变其中一些文件，使用者如果有别的需求，也可以自己改写  
+pip install -e panopticapi  
+安装panopticapi这个工具  
+# 2 转化为instance annotation  
 将labelme生成的.json文件放到一个文件夹中,并copy上面git clone 的panopticapi文件夹下的panoptic_coco_categories.json文件。然后运行gather.ipynb文件，记得将文件中的路径改成自己的。此时就会得到符合coco数据集结构的instance annotations.json。如果你要新增一些categories ，记得改写gather.ipynb中的new_categories字典
 gather.ipynb会生成categerie.json和instance_train.json两个文件，记得注意修改路径。
 随后为了以防万一，记得运行check_duplicate_colors.py，检查color不要重复。
